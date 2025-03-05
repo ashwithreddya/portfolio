@@ -16,7 +16,6 @@ const observer = new IntersectionObserver(entries => {
             entry.target.classList.add('visible');
             entry.target.classList.remove('out');
         } else if (entry.boundingClientRect.top > 0) {
-            // Only reverse when scrolling up past the element
             entry.target.classList.remove('visible');
             entry.target.classList.add('out');
         }
@@ -31,15 +30,21 @@ const body = document.body;
 
 toggleButton.addEventListener('click', () => {
     body.classList.toggle('dark-mode');
-    toggleButton.textContent = body.classList.contains('dark-mode') ? '☀️' : '🌙';
-    localStorage.setItem('theme', body.classList.contains('dark-mode') ? 'dark' : 'light');
+    const isDark = body.classList.contains('dark-mode');
+    toggleButton.textContent = isDark ? '☀️' : '🌙';
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
 });
 
-// Load Theme Preference
-if (localStorage.getItem('theme') === 'dark') {
-    body.classList.add('dark-mode');
-    toggleButton.textContent = '☀️';
-}
+// Load Theme Preference on Page Load
+document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        body.classList.add('dark-mode');
+        toggleButton.textContent = '☀️';
+    } else {
+        toggleButton.textContent = '🌙';
+    }
+});
 
 // Mobile Nav Toggle
 const hamburger = document.querySelector('.hamburger');
@@ -67,41 +72,21 @@ document.querySelectorAll('.skill-card').forEach(card => {
     });
 });
 
-// Hero Animation
-const heroTitle = document.querySelector('.hero-content h1');
-const heroTagline = document.querySelector('.tagline');
-const heroSubTag = document.querySelector('.sub-tag');
-[heroTitle, heroTagline, heroSubTag].forEach((el, i) => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(30px)';
-    setTimeout(() => {
-        el.style.transition = 'opacity 1s ease, transform 1s ease';
-        el.style.opacity = '1';
-        el.style.transform = 'translateY(0)';
-    }, i * 400);
-});
+// Typewriter Effect for Name
+const nameElement = document.getElementById('typed-name');
+const fullName = "Ashwith Reddy";
+let i = 0;
 
-// Timeline Dots
-document.querySelectorAll('.timeline-item').forEach(item => {
-    const dot = document.createElement('div');
-    dot.classList.add('timeline-dot');
-    dot.style.position = 'absolute';
-    dot.style.width = '16px';
-    dot.style.height = '16px';
-    dot.style.background = '#00d4ff';
-    dot.style.borderRadius = '50%';
-    dot.style.top = '35px';
-    dot.style.zIndex = '10';
-    dot.style.boxShadow = '0 0 10px rgba(0, 212, 255, 0.7)';
-    if (item.style.textAlign === 'right') {
-        dot.style.right = '-38px';
-    } else {
-        dot.style.left = '-38px';
+function typeWriter() {
+    if (i < fullName.length) {
+        nameElement.textContent += fullName.charAt(i);
+        i++;
+        setTimeout(typeWriter, 150);
     }
-    item.appendChild(dot);
-});
+}
+setTimeout(typeWriter, 500);
 
-// Hero Particle Background (Simulated Canvas Effect)
+// Hero Particle Background (Universe Theme)
 const hero = document.querySelector('.hero');
 const canvas = document.createElement('canvas');
 canvas.style.position = 'absolute';
@@ -122,24 +107,25 @@ function resizeCanvas() {
 
 function initParticles() {
     particles = [];
-    const numParticles = 100;
+    const numParticles = 150;
     for (let i = 0; i < numParticles; i++) {
         particles.push({
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
             radius: Math.random() * 2 + 1,
-            speedX: (Math.random() - 0.5) * 2,
-            speedY: (Math.random() - 0.5) * 2
+            speedX: (Math.random() - 0.5) * 1.5,
+            speedY: (Math.random() - 0.5) * 1.5,
+            opacity: Math.random() * 0.5 + 0.2
         });
     }
 }
 
 function animateParticles() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = 'rgba(0, 212, 255, 0.5)';
     particles.forEach(p => {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
         ctx.fill();
 
         p.x += p.speedX;
@@ -156,6 +142,33 @@ resizeCanvas();
 initParticles();
 animateParticles();
 
+// Parallax Effect for Hero Background
+window.addEventListener('scroll', () => {
+    const scrollPos = window.scrollY;
+    hero.style.backgroundPositionY = `${scrollPos * 0.5}px`;
+});
+
+// Enhanced Scroll Animations for Sections
+const sections = document.querySelectorAll('.container, .contact');
+const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.transition = 'transform 1s ease, opacity 1s ease';
+            entry.target.style.transform = 'scale(1)';
+            entry.target.style.opacity = '1';
+        } else {
+            entry.target.style.transform = 'scale(0.95)';
+            entry.target.style.opacity = '0.7';
+        }
+    });
+}, { threshold: 0.2 });
+
+sections.forEach(section => {
+    section.style.transform = 'scale(0.95)';
+    section.style.opacity = '0.7';
+    sectionObserver.observe(section);
+});
+
 // Page Load Fade
 window.addEventListener('load', () => {
     document.body.style.opacity = '0';
@@ -163,4 +176,39 @@ window.addEventListener('load', () => {
         document.body.style.transition = 'opacity 0.8s ease';
         document.body.style.opacity = '1';
     }, 100);
+});
+
+// Email Obfuscation and Click Handler
+document.addEventListener('DOMContentLoaded', () => {
+    const email = 'saiashwith' + '@' + 'gmail.com';
+    const emailLink = document.getElementById('email-link');
+    const heroEmailLink = document.getElementById('hero-email-link');
+
+    if (emailLink && heroEmailLink) {
+        // Set email for Contact section
+        emailLink.href = 'mailto:' + email;
+        emailLink.textContent = email;
+
+        // Set email for Hero section "Connect Now" button
+        heroEmailLink.href = 'mailto:' + email;
+
+        // Debugging logs
+        console.log('Email set for Contact link:', emailLink.href);
+        console.log('Email set for Hero link:', heroEmailLink.href);
+
+        // Fallback: Force mailto link to open if click doesn’t work automatically
+        emailLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.href = 'mailto:' + email;
+            console.log('Contact email clicked');
+        });
+
+        heroEmailLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.href = 'mailto:' + email;
+            console.log('Hero email clicked');
+        });
+    } else {
+        console.error('Email link elements not found in DOM');
+    }
 });

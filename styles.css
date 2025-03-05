@@ -107,9 +107,13 @@ body.dark-mode .sticky-nav {
     align-items: center;
     justify-content: center;
     text-align: center;
-    background: url('https://www.transparenttextures.com/patterns/circuit-pattern.png'), linear-gradient(135deg, #0077b6 0%, #00d4ff 50%, #90e0ef 100%);
+    background: url('https://www.transparenttextures.com/patterns/stardust.png'), radial-gradient(circle at center, #1a1a3d 0%, #0d0d1f 100%);
     background-blend-mode: overlay;
     overflow: hidden;
+}
+
+body.dark-mode .hero {
+    background: url('https://www.transparenttextures.com/patterns/stardust.png'), linear-gradient(135deg, #1a3c5e 0%, #2a6f97 50%, #5e9ec6 100%);
 }
 
 .hero-overlay {
@@ -118,7 +122,7 @@ body.dark-mode .sticky-nav {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 119, 182, 0.5);
+    background: rgba(0, 0, 0, 0.3);
     z-index: 1;
 }
 
@@ -147,6 +151,13 @@ body.dark-mode .sticky-nav {
     margin-bottom: 40px;
 }
 
+.hero-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
 .hero-links .btn {
     padding: 14px 35px;
     background: #00d4ff;
@@ -154,7 +165,6 @@ body.dark-mode .sticky-nav {
     text-decoration: none;
     border-radius: 50px;
     font-weight: 500;
-    margin: 0 20px;
     transition: all 0.4s ease;
 }
 
@@ -176,7 +186,7 @@ body.dark-mode .sticky-nav {
 }
 
 /* Container */
-.container {
+.container, .contact {
     width: 90%;
     max-width: 1400px;
     margin: auto;
@@ -184,6 +194,7 @@ body.dark-mode .sticky-nav {
     position: relative;
     background: url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
     background-attachment: fixed;
+    transition: transform 1s ease, opacity 1s ease;
 }
 
 h2 {
@@ -197,9 +208,12 @@ h2 {
 
 /* Skills */
 .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .skill-card {
@@ -209,6 +223,12 @@ h2 {
     text-align: center;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
     transition: transform 0.4s ease, opacity 0.4s ease;
+    flex: 1 1 300px;
+    max-width: 350px;
+}
+
+body.dark-mode .skill-card {
+    background: rgba(40, 54, 85, 0.9);
 }
 
 .skill-card:hover {
@@ -275,6 +295,10 @@ h2 {
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
 }
 
+body.dark-mode .timeline-content {
+    background: rgba(40, 54, 85, 0.9);
+}
+
 .timeline-content h3 {
     font-size: 1.8rem;
     color: #00d4ff;
@@ -326,6 +350,10 @@ h2 {
     transition: transform 0.4s ease, opacity 0.4s ease;
 }
 
+body.dark-mode .edu-card {
+    background: rgba(40, 54, 85, 0.9);
+}
+
 .edu-card h3 {
     font-size: 1.8rem;
     color: #00d4ff;
@@ -341,6 +369,9 @@ h2 {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 25px;
+    max-width: 900px;
+    margin: 0 auto;
+    justify-content: center;
 }
 
 .cert-card {
@@ -351,10 +382,7 @@ h2 {
     text-align: center;
     font-weight: 500;
     transition: transform 0.4s ease, opacity 0.4s ease;
-}
-
-.cert-card:hover {
-    transform: scale(1.08);
+    max-width: 320px;
 }
 
 /* Contact */
@@ -439,6 +467,18 @@ footer {
         font-size: 1.1rem;
     }
 
+    .hero-links {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .hero-links .btn {
+        width: 80%;
+        max-width: 250px;
+        padding: 12px 30px;
+    }
+
     .timeline::before {
         left: 25px;
     }
@@ -448,5 +488,25 @@ footer {
         left: 0 !important;
         text-align: left;
         padding-left: 50px;
+    }
+
+    .skills-grid {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
+
+    .skill-card {
+        max-width: 400px;
+    }
+
+    .cert-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        max-width: 100%;
+        gap: 20px;
+    }
+
+    .cert-card {
+        max-width: 100%;
     }
 }
